@@ -180,10 +180,26 @@ window.lvdom = (function(){
     }());
 
     var lvdom = {
+        // Css Selector Support
         get: function(selector) {
             var els;
-            if(typeof selector === "string") {
-                els = document.querySelectorAll(selector);
+            // Selector Patterns
+            var id_selector = /^\#{1}/i.test(selector);
+            var class_selector = /^\.{1}/i.test(selector);
+            var tag_selector = /\w+/i.test(selector);
+            // Remove CSS Selector
+            if(id_selector || class_selector){
+                selector = selector.split("").filter(function(val, i){
+                    return i != 0;
+                }).join("");
+            }
+            // Select by selector type
+            if(id_selector) {
+                els = [document.getElementById(selector)];
+            } else if (class_selector){
+                els = document.getElementsByClassName(selector);
+            } else if (tag_selector){
+                els = document.getElementsByTagName(selector);
             } else if (selector.length) {
                 els = selector;
             } else {

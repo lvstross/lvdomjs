@@ -1,2 +1,1 @@
-lvdom.get("#head").addClass("red");
-console.log(lvdom.get("#head").html());
+console.log(lvdom.get("H1").html());
