@@ -13,6 +13,70 @@ if (typeof Array.prototype.indexOf !== "function") {
     };
 }
 
+// Production steps of ECMA-262, Edition 5, 15.4.4.19
+// Reference: http://es5.github.io/#x15.4.4.19
+if (!Array.prototype.map) {
+  Array.prototype.map = function(callback/*, thisArg*/) {
+    var T, A, k;
+    if (this == null) {
+      throw new TypeError('this is null or not defined');
+    }
+    var O = Object(this);
+    var len = O.length >>> 0;
+    if (typeof callback !== 'function') {
+      throw new TypeError(callback + ' is not a function');
+    }
+    if (arguments.length > 1) {
+      T = arguments[1];
+    }
+    A = new Array(len);
+    k = 0;
+    while (k < len) {
+      var kValue, mappedValue;
+      if (k in O) {
+        kValue = O[k];
+        mappedValue = callback.call(T, kValue, k, O);
+        A[k] = mappedValue;
+      }
+      k++;
+    }
+    return A;
+  };
+}
+
+// Production steps of ECMA-262, Edition 5, 15.4.4.18
+// Reference: http://es5.github.io/#x15.4.4.18
+if (!Array.prototype.forEach) {
+  Array.prototype.forEach = function(callback/*, thisArg*/) {
+    var T, k;
+    if (this == null) {
+      throw new TypeError('this is null or not defined');
+    }
+    var O = Object(this);
+    var len = O.length >>> 0;
+    if (typeof callback !== 'function') {
+      throw new TypeError(callback + ' is not a function');
+    }
+    if (arguments.length > 1) {
+      T = arguments[1];
+    }
+    k = 0;
+    while (k < len) {
+      var kValue;
+      if (k in O) {
+        kValue = O[k];
+        callback.call(T, kValue, k, O);
+      }
+      k++;
+    }
+  };
+}
+/*
+* End of Browser Support IE8
+*/
+
+/*========= lvdomjs ===========*/
+
 window.lvdom = (function(){
     function Lvdom(els) {
         for(var i = 0; i < els.length; i++) {
@@ -237,4 +301,3 @@ window.lvdom = (function(){
 
     return lvdom;
 }());
-// Repo: https://github.com/andrew8088/dome
